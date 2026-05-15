@@ -10,9 +10,10 @@ services:
     env_file: .env
     volumes:
       - pg_data:/var/lib/postgresql/data
+
   backend:
     container_name: backend
-    build: ./backend/
+    image: ${DOCKERHUB_USERNAME}/kittygram_backend:latest
     env_file: .env
     depends_on:
       - db
@@ -23,15 +24,17 @@ services:
       sh -c "python manage.py migrate &&
       python manage.py collectstatic --noinput &&
       gunicorn --bind 0.0.0.0:8000 kittygram_backend.wsgi"
+
   frontend:
     container_name: frontend
-    build: ./frontend/
+    image: ${DOCKERHUB_USERNAME}/kittygram_frontend:latest
     command: sh -c "cp -r /app/build/. /static/"
     volumes:
       - static:/static
+
   gateway:
     container_name: gateway
-    build: ./nginx/
+    image: ${DOCKERHUB_USERNAME}/kittygram_gateway:latest
     depends_on:
       - backend
       - frontend

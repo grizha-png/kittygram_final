@@ -1,0 +1,4 @@
+repo_owner: your-github-login
+kittygram_domain: https://example.com/kittygram
+taski_domain: https://example.com
+dockerhub_username: username
